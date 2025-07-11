@@ -22,10 +22,6 @@ scripts/*.log
 # OS files
 .DS_Store
 Thumbs.db
-
-# Env files
-.env*
-
 # Others
 *.local
 *.swp
