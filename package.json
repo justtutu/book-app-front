@@ -155,5 +155,8 @@
   },
   "resolutions": {
     "bin-wrapper": "npm:bin-wrapper-china"
+  },
+  "lint-staged": {
+    "*": "eslint --fix"
   }
 }

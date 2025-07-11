@@ -1,0 +1,41 @@
+name: Deploy H5 to Cloud Server
+
+on:
+  push:
+    branches:
+      - main # 或你实际的主分支名
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build H5
+        run: pnpm build:h5
+
+      - name: Deploy to Cloud Server via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          port: ${{ secrets.SERVER_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: 'dist/build/h5/*'
+          target: ${{ secrets.SERVER_PATH }}
+          strip_components: 3
+          rm: true # 部署前清空目标目录
